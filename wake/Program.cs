@@ -31,9 +31,7 @@ namespace wake
 
             Console.WriteLine("MAC -> {0} | Address -> {1}", mac, ip);
 
-
-
-
+            // the actual WOL bit
             byte[] magic = new byte[102];
             byte[] macBytes = new byte[6];
             string[] macStrings = mac.Split(":");
@@ -61,10 +59,12 @@ namespace wake
                 Console.WriteLine("Magic packet sent.");
             }
         }
+
         static void PrintUsage()
         {
             Console.WriteLine("USAGE: wake <mac> <address>");
         }
+
         static bool SendData(string ip, byte[] data)
         {
             using (UdpClient client = new UdpClient(9))
