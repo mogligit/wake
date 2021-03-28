@@ -8,7 +8,9 @@ namespace wake
     {
         static void Main(string[] args)
         {
-            //this is a new comment
+            Console.WriteLine("wake by mogli");
+
+            // MAC regex
             Regex macExpression = new Regex("[0-9|a-f|A-F]{2}:[0-9|a-f|A-F]{2}:[0-9|a-f|A-F]{2}:[0-9|a-f|A-F]{2}:[0-9|a-f|A-F]{2}:[0-9|a-f|A-F]{2}");
 
             if (args.Length < 2)
@@ -16,30 +18,34 @@ namespace wake
                 PrintUsage();
                 return;
             }
-            else if (macExpression.Match(args[1]).Value != args[1])
+            
+            if (macExpression.Match(args[0]).Value != args[0])
             {
                 Console.WriteLine("MAC address is not valid!");
+                Console.WriteLine("Valid format (uppercase or lowercase): a1:b2:c3:d4:e5:f6");
                 return;
             }
 
-            string ip = args[0];
-            string mac = args[1];
-            Console.WriteLine("Address -> {0} | MAC -> {1}", ip, mac);
+            string mac = args[0];
+            string ip = args[1];
+
+            Console.WriteLine("MAC -> {0} | Address -> {1}", mac, ip);
+
+
+
 
             byte[] magic = new byte[102];
             byte[] macBytes = new byte[6];
             string[] macStrings = mac.Split(":");
 
-            //Converts MAC address into bytes
+            // converts MAC address into bytes
             for (int i = 0; i <= 5; i++)
             {
                 macBytes[i] = Convert.ToByte(macStrings[i], 16);
             }
 
-            /*
-             * Iterates through array and fills first 6 bytes with FF
-             * The rest is the MAC repeated 16 times
-             */
+            // Iterates through array and fills first 6 bytes with FF
+            // The rest is the MAC repeated 16 times
             for (int i = 0; i <= 5; i++)
             {
                 magic[i] = 255;
@@ -57,8 +63,7 @@ namespace wake
         }
         static void PrintUsage()
         {
-            Console.WriteLine("Wake On Lan by mogli");
-            Console.WriteLine("USAGE: wake <address> <mac>");
+            Console.WriteLine("USAGE: wake <mac> <address>");
         }
         static bool SendData(string ip, byte[] data)
         {
